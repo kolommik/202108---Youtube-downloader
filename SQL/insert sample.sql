@@ -1,0 +1,1 @@
+﻿INSERT INTO download_queue (path, url) VALUES ('D:/RL', 'https://www.youtube.com/watch?v=sKBREGKCc6o&t=3440s');

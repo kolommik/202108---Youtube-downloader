@@ -194,8 +194,8 @@ def update_status(item: Dict[Any, Any], job_id: int) -> None:
     # 'status': 'downloading',
     # 'downloaded_bytes': 441858,
     # 'total_bytes': 73196583,
-    # 'tmpfilename': 'D:\\__1\\HardML5\\2\\3 Урок - ранжирования.f137.mp4.part',
-    # 'filename': 'D:\\__1\\HardML5\\2\\3 Урок - ранжирования.f137.mp4',
+    # 'tmpfilename': 'D:\\__1\\3 Урок - ранжирования.f137.mp4.part',
+    # 'filename': 'D:\\__1\\3 Урок - ранжирования.f137.mp4',
     # 'eta': 919,
     # 'speed': 79154.73166264818,
     # 'elapsed': 5.979184627532959,
@@ -249,8 +249,8 @@ def worker() -> None:
                 filename = ydl.prepare_filename(info)
 
                 update_task_filename(job_id=job_id, filename=filename)
-        except Exception as e:
-            print("Exception in getting filename", e)
+        except Exception as error:
+            print("Exception in getting filename", error)
             status = -1
             close_task(
                 job_id=job_id,
@@ -284,8 +284,8 @@ def worker() -> None:
             # jobe well done
             status = 2
 
-        except Exception as e:
-            print("Exception in job", e)
+        except Exception as error:
+            print("Exception in job", error)
             # jobe fail with error
             status = -1
 
