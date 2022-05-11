@@ -1,0 +1,6 @@
+{
+    "python.formatting.provider": "black",
+    "projectManager.git.baseFolders": [
+        "d:\\_Code"
+    ]
+}
