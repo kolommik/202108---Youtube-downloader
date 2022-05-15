@@ -8,6 +8,7 @@ from contextlib import closing
 from psycopg2 import connect, DatabaseError
 import numpy as np
 import youtube_dl
+from youtube_dl.utils import DownloadError
 
 # --------------------------------------------------------
 SQL_DBNAME = "youtube_dl"
@@ -233,7 +234,16 @@ def worker() -> None:
 
         # get info ============================================================
         # video_format = "bestaudio/bestvideo"
-        video_format = "22[height=720]/17[height=720]/18[height=720]"
+        video_format = "22[height=720]/22[width=1280]/"
+        video_format += "17[height=720]/17[width=1280]/"
+        video_format += "18[height=720]/18[width=1280]/"
+        video_format += "22[height=480]/"
+        video_format += "17[height=480]/"
+        video_format += "18[height=480]/"
+        video_format += "22[height=360]/"
+        video_format += "17[height=360]/"
+        video_format += "18[height=360]"
+
         output_filename = f"{path}/%(title)s.%(ext)s"
 
         ydl_opts = {
@@ -249,14 +259,22 @@ def worker() -> None:
                 filename = ydl.prepare_filename(info)
 
                 update_task_filename(job_id=job_id, filename=filename)
-        except Exception as error:
-            print("Exception in getting filename", error)
+        except DownloadError as error:
+            print("DownloadError Exception in getting filename", error)
             status = -1
             close_task(
                 job_id=job_id,
                 status=status,
             )
-            break
+            continue
+        # except Exception as error:
+        #     print("Exception in getting filename", error)
+        #     status = -1
+        #     close_task(
+        #         job_id=job_id,
+        #         status=status,
+        #     )
+        #     continue
 
         print(f"{worker_id} {job_id} saving to: {filename}")
 
@@ -283,11 +301,14 @@ def worker() -> None:
                 # info = ydl.extract_info(url, download=True)
             # jobe well done
             status = 2
-
-        except Exception as error:
-            print("Exception in job", error)
+        except DownloadError as error:
+            print("DownloadError Exception in job", error)
             # jobe fail with error
             status = -1
+        # except Exception as error:
+        #     print("Exception in job", error)
+        #     # jobe fail with error
+        #     status = -1
 
         # close job ===========================================================
         close_task(

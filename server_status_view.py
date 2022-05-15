@@ -1,5 +1,4 @@
 """Shows database all jobs statuses"""
-from typing import Tuple, Optional, Dict, Any
 import os
 from contextlib import closing
 from psycopg2 import connect
